@@ -1,0 +1,87 @@
+---
+title: "Báo cáo ngày"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE, warning=FALSE, include=FALSE}
+library(ggplot2)
+library(tidyverse)
+```
+
+
+```{r, echo=FALSE, warning=FALSE, include=FALSE}
+inc <- readRDS('../output/inc.rds')
+inc_dis <- readRDS('../output/inc_dis.rds')
+inc_series <- readRDS('../output/inc_series.rds')
+current_date <- as.Date('2021-06-15')
+```
+
+
+# Số ca mắc mới theo ngày
+
+```{r}
+x <- inc_dis %>%
+  filter(test_date == current_date) %>%
+  arrange(desc(n))
+
+x
+```
+
+
+## Toàn thành phố
+
+```{r echo=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.width=10}
+ggplot(inc) +
+  geom_col(aes(x = test_date, y = n)) +
+  geom_line(aes(x=test_date, y=rm), color='red', size=1) +
+  geom_text(aes(x=test_date, y=n, label=n), vjust=-0.3, size=4) +
+  labs(title = 'Số ca mới và biến động trung bình 7 ngày') +
+  ylab("Số ca") +
+  xlab("Ngày") +
+  geom_vline(xintercept = as.Date('2021-05-31')) +
+  scale_x_date(
+    date_labels = '%d-%m-%Y',
+    date_breaks = '1 day',
+    limits=c(as.Date('2021-05-25'), as.Date('2021-06-16'))) +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+
+## Theo quận huyện
+
+```{r echo=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.width=10}
+ggplot(inc_dis) +          
+  geom_col(aes(x =test_date, y=n))+
+  geom_line(aes(x=test_date, y=rm), color='red') +
+  labs(title = "Số ca mắc mới theo quận huyện") +
+  ylab("Số ca") +
+  xlab("Ngày") +
+  scale_x_date(
+    date_labels='%d-%m-%Y',
+    limits=c(as.Date('2021-05-25'), as.Date('2021-06-16'))) +
+  theme(axis.text.x = element_text(angle = 90, size = 3)) +
+  facet_wrap(~ res_loc_dis)
+```
+
+## Theo chuỗi
+
+```{r echo=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.width=10}
+ggplot(inc_series) +          
+  geom_col(aes(x =test_date, y=n))+
+  geom_line(aes(x=test_date, y=rm), color='red') +
+  labs(title = "Số ca mắc mới theo chuỗi") +
+  ylab("Số ca") +
+  xlab("Ngày") +
+  scale_x_date(
+    date_labels='%d-%m-%Y',
+    limits=c(as.Date('2021-05-25'), as.Date('2021-06-16'))) +
+  theme(axis.text.x = element_text(angle = 90, size = 3)) +
+  facet_wrap(~ loc_firstid)
+```
+
+
+
