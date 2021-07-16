@@ -1,0 +1,119 @@
+---
+title: "Báo cáo ngày"
+output:
+  pdf_document: 
+    latex_engine: xelatex
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE, warning=FALSE, include=FALSE}
+library(ggplot2)
+library(tidyverse)
+```
+
+
+```{r, echo=FALSE, warning=FALSE, include=FALSE}
+inc <- readRDS('../output/inc.rds')
+inc_dis <- readRDS('../output/inc_dis.rds')
+inc_series <- readRDS('../output/inc_series.rds')
+current_date <- as.Date('2021-06-15')
+```
+
+
+# Số ca mắc mới theo ngày
+
+```{r}
+dis <- inc_dis %>%
+  filter(test_date == current_date, n != 0) %>%
+  arrange(desc(n))
+
+series <- inc_series %>%
+  filter(test_date == current_date, n != 0) %>%
+  arrange(desc(n))
+
+dis
+
+series
+```
+
+
+## Toàn thành phố
+
+```{r echo=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.width=10}
+ggplot(inc) +
+  geom_col(aes(x = test_date, y = n)) +
+  geom_line(aes(x=test_date, y=rm), color='red', size=1) +
+  geom_text(aes(x=test_date, y=n, label=n), vjust=-0.3, size=4) +
+  labs(title = 'So ca moi va bien dong trung binh 7 ngay') +
+  ylab("So ca moi") +
+  xlab("Ngay") +
+  geom_vline(xintercept = as.Date('2021-05-31')) +
+  scale_x_date(
+    date_labels = '%d-%m-%Y',
+    date_breaks = '1 day',
+    limits=c(as.Date('2021-05-25'), as.Date('2021-06-23'))) +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+
+## Theo quận huyện
+
+```{r echo=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.width=10}
+ggplot(
+  inc_dis %>% 
+    filter(res_loc_dis %in% levels(dis$res_loc_dis)[1:12])
+  ) +          
+  geom_col(aes(x =test_date, y=n))+
+  geom_line(aes(x=test_date, y=rm), color='red') +
+  labs(title = "So ca mac moi theo quan huyen") +
+  ylab("So ca mac moi") +
+  xlab("Ngay") +
+  scale_x_date(
+    date_labels='%d-%m-%Y',
+    limits=c(as.Date('2021-05-25'), as.Date('2021-06-16'))) +
+  theme(axis.text.x = element_text(angle = 90, size = 3)) +
+  facet_wrap(~ res_loc_dis, ncol=4)
+```
+
+```{r echo=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.width=10}
+ggplot(
+  inc_dis %>% 
+    filter(res_loc_dis %in% levels(inc_dis$res_loc_dis)[13:24])
+  ) +          
+  geom_col(aes(x =test_date, y=n))+
+  geom_line(aes(x=test_date, y=rm), color='red') +
+  labs(title = "So ca mac moi theo quan huyen") +
+  ylab("So ca mac moi") +
+  xlab("Ngay") +
+  scale_x_date(
+    date_labels='%d-%m-%Y',
+    limits=c(as.Date('2021-05-25'), as.Date('2021-06-16'))) +
+  theme(axis.text.x = element_text(angle = 90, size = 3)) +
+  facet_wrap(~ res_loc_dis, ncol=4)
+```
+
+## Theo chuỗi
+
+```{r echo=FALSE, warning=FALSE, fig.fullwidth=TRUE, fig.width=10}
+ggplot(
+  inc_series %>% 
+    filter(loc_firstid %in% levels(inc_series$loc_firstid)[1:12])
+  ) +          
+  geom_col(aes(x =test_date, y=n))+
+  geom_line(aes(x=test_date, y=rm), color='red') +
+  labs(title = "So ca mac moi theo chuoi") +
+  ylab("So ca") +
+  xlab("Ngay") +
+  scale_x_date(
+    date_labels='%d-%m-%Y',
+    limits=c(as.Date('2021-05-25'), as.Date('2021-06-16'))) +
+  theme(axis.text.x = element_text(angle = 90, size = 3)) +
+  facet_wrap(~ loc_firstid)
+```
+
+
+
