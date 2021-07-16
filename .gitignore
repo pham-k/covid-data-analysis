@@ -9,6 +9,10 @@ archive
 
 output
 
+data
+
+export
+
 script/*.html
 
 script/*.pdf
