@@ -9,7 +9,14 @@ archive
 
 output
 
-data
+data/external/death-data/*
+data/external/test-data/*
+data/external/public-data/*
+data/raw/test-data/*
+data/raw/public-data/*
+data/raw/shift-data/*
+data/interim/*
+data/processed/*
 
 export
 

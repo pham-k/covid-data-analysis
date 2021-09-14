@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = empty-project-type
-recent_files = ['src/data/make_dataset.py', 'src/data/util.py', 'src/data/make_heatmap_data.py', 'src/config/path.py']
+recent_files = ['src/data/merge_test_data.py', 'src/data/get_ct_from_test_data.py', 'src/visualization/plot_ct_from_test_data.py', 'src/visualization/plot_no_test_no_positive.py']
 
 [main]
 version = 0.2.0
