@@ -18,6 +18,8 @@ data/raw/shift-data/*
 data/interim/*
 data/processed/*
 
+*.docx
+
 export
 
 script/*.html
