@@ -82,7 +82,7 @@ def plot_heatmap(df, title, prefix, name,
 adh = list(ct_by_adh.addr_dist_home.unique())
 
 start_date = '2021-08-01'
-end_date = '2021-09-11'
+end_date = '2021-09-26'
 prefix = 'ct-by'
 
 df_adh = (
@@ -120,7 +120,7 @@ dist = list(ct_by_adh.addr_dist_home.unique())
 # dist = dist[0:3] # to test
 
 start_date = '2021-08-01'
-end_date = '2021-09-11'
+end_date = '2021-09-26'
 prefix = 'ct-by-awh'
 
 ct_by_awh['ct'] = ct_by_awh['ct'].fillna(0).replace(0, 4)
@@ -166,7 +166,7 @@ for d in dist:
 ag = list(ct_by_ag.age_group.unique())
 
 start_date = '2021-08-01'
-end_date = '2021-09-11'
+end_date = '2021-09-26'
 prefix = 'ct-by'
 
 df = (
@@ -189,7 +189,7 @@ plot_heatmap(df, title='CT theo nhom tuoi', prefix=prefix, name='ag',
 sex = list(ct_by_sex.sex.unique())
 
 start_date = '2021-08-01'
-end_date = '2021-09-11'
+end_date = '2021-09-26'
 prefix = 'ct-by'
 
 df = (

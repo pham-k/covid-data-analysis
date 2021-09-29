@@ -1,23 +1,28 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
-from config import path
-from data import util
+from src.config import path
+import util
 from datetime import date
 
 # %% Import
-raw = pd.read_csv(path.raw / 'test' / 'test-merge-2021-08-28.csv')
+usecols = ['id', 'id_patient', 'date_sample', 'sex', 'yob', 'reason', 'result',
+         'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
+         'ct_e', 'ct_n', 'ct_rdrp', 'diag_proc', 'sample_type']
+raw = pd.read_csv(
+    path.raw / 'test-data' / 'test-merge-2021-09-26.csv',
+    usecols=usecols)
 pop = pd.read_csv(path.reference / 'pop_1.csv', sep=',', dtype={'id_addiv': 'str'})
 addiv = pd.read_csv(path.reference / 'addiv.csv', sep=',', dtype={'id_addiv': 'str', 'of_addiv': 'str'})
 # %% Rename columns
-with open(path.reference.joinpath('col-name-test.txt'), 'r') as file:
-    raw.columns = file.read().split('\n')
+# with open(path.reference.joinpath('col-name-test.txt'), 'r') as file:
+#     raw.columns = file.read().split('\n')
     
-raw = raw[['id', 'date_sample', 'sex', 'yob', 'reason', 'result',
-         'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
-         'ct_e', 'ct_n', 'ct_rdrp', 'sample_type']]
+# raw = raw[['id', 'id_patient', 'date_sample', 'sex', 'yob', 'reason', 'result',
+#          'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
+#          'ct_e', 'ct_n', 'ct_rdrp', 'diag_proc', 'sample_type']]
 # %% Dedup
-raw = raw.drop_duplicates('id')
-# dup = raw[raw.duplicated('id')]
+raw = raw.drop_duplicates(['id', 'id_patient'])
+# dup = raw[raw.duplicated(['id', 'id_patient'])]
 # %% Preprocess
 df = raw.assign(
     sex = raw.sex.astype('str').apply(util.preprocess_string),
@@ -28,7 +33,8 @@ df = raw.assign(
     addr_prov_home = raw.addr_prov_home.astype('str').apply(util.preprocess_string),
     date_sample = raw.date_sample.astype('str').apply(lambda x: x[0:10]),
     age = date.today().year - raw.yob,
-    sample_type = raw.sample_type.astype('str').apply(util.preprocess_string)
+    sample_type = raw.sample_type.astype('str').apply(util.preprocess_string),
+    diag_proc = raw.diag_proc.astype('str').apply(util.preprocess_string)
 )
 
 # Create age_group --> move to get_no_test
@@ -95,6 +101,7 @@ mask_addr = (
     (df.addr_prov_home != 'THANH PHO HO CHI MINH')
     | (df.addr_dist_home == 'THANH PHO DI AN')
     | (df.addr_dist_home == 'THANH PHO THUAN AN')
+    | (df.addr_dist_home == 'THANH PHO THANH HOA')
 )
 
 df.loc[mask_addr, 'addr_prov_home'] = 'KHAC'
@@ -114,7 +121,6 @@ df = df.drop(columns=['id_addiv', 'dw'])
 
 # %% Export
 df.to_csv(path.interim.joinpath('test-data.csv'), index=False, sep=',')
-
 
 
 

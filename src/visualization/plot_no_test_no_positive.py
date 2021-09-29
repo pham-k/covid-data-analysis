@@ -8,7 +8,6 @@ Created on Sun Aug 15 10:03:49 2021
 
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 
 from src.config import path
 
@@ -54,7 +53,7 @@ ax.plot(
     df.index, df.no_positive_rollsum / 7,
     label='Biến động trung bình 7 ngày', linewidth=3, color='red')
 ax.set_ylabel('Số test (hc)')
-ax.set_ylim([0, 40000])
+# ax.set_ylim([0, 40000])
 ax.set_xlabel('Ngày')
 ax.set_xticks(df.index)
 ax.tick_params(axis='x', labelrotation=90)
@@ -90,7 +89,7 @@ ax.barh(df.index, df.no_test_corrected, color='grey', alpha=0.4, label='Số tes
 ax.barh(df.index, df.no_positive, color='red', alpha=0.4, label='Số dương tính cộng dồn')
 ax.set_ylabel('Quận huyện')
 ax.set_xlabel('Số test (hc) cộng dồn')
-ax.set_xlim([0, 100000])
+# ax.set_xlim([0, 110000])
 ax.set_title('Số test (hc) và số test dương cộng dồn theo quận huyện')
 ax.legend(loc='lower right')
 addlabels(df.index, df.no_test_corrected)

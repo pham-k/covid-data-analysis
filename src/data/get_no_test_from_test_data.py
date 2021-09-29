@@ -10,6 +10,7 @@ Created on Fri Sep  3 15:33:39 2021
 
 import pandas as pd
 from config import path
+import util
 
 # %% Import
 df = (pd.read_csv(
@@ -40,8 +41,9 @@ df['age_group'] = pd.cut(
 df = df[(df.date_sample >= '2021-05-27')]
 df = df.rename(columns={'date_sample': 'date_report'})
 
+# duong tinh mau gop
 # df['positive_group_sample'] = ((df.result == 'DUONG TINH') 
-#                                & (df.sample_type == 'MAU GOP'))
+#                                 & (df.sample_type == 'MAU GOP'))
 # %%
 def get_no_event(data, date_col='date_report', no_col='no_test', pop=10000000, rolling=7):
     """
@@ -204,18 +206,60 @@ def get_no_event_by_group(data,
         )
     return df_3
 
-# %% Get no test
+# %% Get no test: tong test
 pop_total = int(pop[pop.id_addiv == '79']['pop'][0])
 data_in_get_no_test = (
     df[(~df.reason.str.startswith('KIEM DICH'))
        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
 )
-no_test = get_no_event(
+no_test = util.get_no_event(
     data=data_in_get_no_test,
     pop=pop_total,
     date_col='date_report',
     no_col='no_test',
     rolling=7)
+
+no_test = (
+    no_test.reset_index()
+    .rename(columns={'index': 'date_report'})
+)
+# %% Get no_test: tong test nhanh duong
+pop_total = int(pop[pop.id_addiv == '79']['pop'][0])
+data_in_1 = df[
+    df.reason.str.contains('TEST NHANH')
+]
+
+no_test_1 = util.get_no_event(
+    data=data_in_1,
+    pop=pop_total,
+    date_col='date_report',
+    no_col='no_test',
+    rolling=7)
+
+# %% Get no_test: tong test nhanh duong co PCR duong
+pop_total = int(pop[pop.id_addiv == '79']['pop'][0])
+data_in_2 = df[
+    df.reason.str.contains('TEST NHANH')
+    & df.diag_proc.str.contains('PCR')
+    & df.result.str.contains('DUONG TINH')
+]
+
+no_test_2 = util.get_no_event(
+    data=data_in_2,
+    pop=pop_total,
+    date_col='date_report',
+    no_col='no_test',
+    rolling=7)
+
+# %% Tinh ty le PCR duong trong test nhanh duong
+no_test_3 = no_test_1.join(
+    no_test_2,
+    how = 'left',
+    lsuffix = '_1',
+    rsuffix = '_2'
+)
+
+no_test_3['pct'] = no_test_3.no_test_2 / no_test_3.no_test_1
 
 # %% Get no positive
 pop_total = int(pop[pop.id_addiv == '79']['pop'][0])
@@ -225,11 +269,16 @@ data_in_get_no_positive = (
        & (~df.reason.str.contains('THEO DOI'))
        & (df.result == 'DUONG TINH')] 
 )
-no_positive = get_no_event(
+no_positive = util.get_no_event(
     data=data_in_get_no_positive,
     pop=pop_total,
     date_col='date_report',
     no_col='no_positive', rolling=7)
+
+no_positive = (
+    no_positive.reset_index()
+    .rename(columns={'index': 'date_report'})
+)
 
 # %% Get no test by ward
 data_in_get_no_test_by_group_awh = (
@@ -239,13 +288,14 @@ data_in_get_no_test_by_group_awh = (
     [df.addr_ward_home.notna()]
 )
 
-no_test_by_awh = get_no_event_by_group(
+no_test_by_awh = util.get_no_event_by_group(
     data_in_get_no_test_by_group_awh,
     date_col = 'date_report',
     no_col = 'no_test',
     rolling = 7,
     getname = False,
-    available_pop = True,
+    pop=pop,
+    addiv=addiv,
     group_col = 'addr_ward_home')
 
 # %% Get no positive by ward
@@ -269,9 +319,9 @@ no_positive_by_awh = get_no_event_by_group(
 # %% Get no test by district
 data_in_get_no_test_by_group_adh = (
     df[(~df.reason.str.startswith('KIEM DICH'))
-       & (~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
-    .query('addr_prov_home == "79"')
-    [df.addr_dist_home.notna()]
+       & (~df.reason.str.contains('THEO DOI')) # remove reason KIEM DICH
+       & (df.addr_prov_home == '79')
+       & (df.addr_dist_home != 'UNKN')]
 )
 
 no_test_by_adh = get_no_event_by_group(
@@ -287,9 +337,10 @@ no_test_by_adh = get_no_event_by_group(
 data_in_get_no_positive_by_group_adh = (
     df[(~df.reason.str.startswith('KIEM DICH')) # remove reason KIEM DICH
        & (~df.reason.str.contains('THEO DOI'))
-       & (df.result == 'DUONG TINH')]
-    .query('addr_prov_home == "79"')
-    [df.addr_dist_home.notna()]
+       & (df.result == 'DUONG TINH')
+       & (df.addr_prov_home == '79')
+       & (df.addr_dist_home != 'UNKN')]
+    # [df.addr_dist_home.notna()]
 )
 
 no_positive_by_adh = get_no_event_by_group(
@@ -297,7 +348,7 @@ no_positive_by_adh = get_no_event_by_group(
     date_col = 'date_report',
     no_col = 'no_positive',
     rolling = 7,
-    getname = False,
+    getname = True,
     available_pop = True,
     group_col = 'addr_dist_home')
 
@@ -372,7 +423,11 @@ no_positive_by_sex = get_no_event_by_group(
     group_col = 'sex')
 
 # %% Export
-no_test.to_csv(path.processed / 'no-test' / 'no-test.csv')
+no_test.to_csv(
+    path.processed / 'no-test' / 'no-test.csv',
+    index=False)
+
+no_test_3.to_csv(path.processed / 'no-test' / 'no-test-3.csv')
 
 no_test_by_adh.to_csv(
     path.processed / 'no-test-by-group' / 'no-test-by-adh.csv',
@@ -390,7 +445,9 @@ no_test_by_sex.to_csv(
     path.processed / 'no-test-by-group' / 'no-test-by-sex.csv',
     index=False)
 
-no_positive.to_csv(path.processed / 'no-positive' / 'no-positive.csv')
+no_positive.to_csv(
+    path.processed / 'no-positive' / 'no-positive.csv',
+    index=False)
 
 no_positive_by_adh.to_csv(
     path.processed / 'no-positive-by-group' / 'no-positive-by-adh.csv',

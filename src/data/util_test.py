@@ -75,6 +75,12 @@ def get_ct_from_test_data(data_no_test, data_no_positive, data_no_positive_group
         labels = labels,
         right = right)
     
+    df['situational_level'] = pd.cut(
+        df[('pct_positive_per' + str(rolling) + 'd')],
+        bins = [0, 0.05, 1.01],
+        labels = [2, 3],
+        right = right)
+    
     return df
 
 # get ct by group from test data
@@ -209,6 +215,12 @@ def get_ct_by_group_from_test_data(data_no_test, data_no_positive, data_no_posit
         df[('pct_positive_per' +str(rolling) + 'd')],
         bins = bins,
         labels = labels,
+        right = right)
+    
+    df['situational_level'] = pd.cut(
+        df[('pct_positive_per' + str(rolling) + 'd')],
+        bins = [0, 0.05, 1.01],
+        labels = [2, 3],
         right = right)
     
     return df

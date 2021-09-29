@@ -7,18 +7,23 @@ from src.data import util_test as ut
 
 
 # %% Import
-raw = pd.read_csv(path.raw / 'test-data' / 'test-merge-2021-09-11.csv')
+usecols = ['id', 'id_patient', 'date_sample', 'sex', 'yob', 'reason', 'result',
+         'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
+         'ct_e', 'ct_n', 'ct_rdrp', 'sample_type']
+raw = pd.read_csv(
+    path.raw / 'test-data' / 'test-merge-2021-09-26.csv',
+    usecols = usecols)
 
 # %% Rename columns
-with open(path.reference.joinpath('col-name-test.txt'), 'r') as file:
-    raw.columns = file.read().split('\n')
+# with open(path.reference.joinpath('col-name-test.txt'), 'r') as file:
+#     raw.columns = file.read().split('\n')
     
-raw = raw[['id', 'date_sample', 'sex', 'yob', 'reason', 'result',
-         'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
-         'ct_e', 'ct_n', 'ct_rdrp', 'sample_type']]
+# raw = raw[['id', 'date_sample', 'sex', 'yob', 'reason', 'result',
+#          'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
+#          'ct_e', 'ct_n', 'ct_rdrp', 'sample_type']]
 # %% Dedup
-raw= raw.drop_duplicates('id')
-# dup = raw[raw.duplicated('id')]
+raw = raw.drop_duplicates(['id', 'id_patient'])
+# dup = raw[raw.duplicated(['id', 'id_patient'])]
 # %% Preprocess
 df = raw.assign(
     sex = raw.sex.astype('str').apply(ut.preprocess_string),

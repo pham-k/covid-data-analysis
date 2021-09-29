@@ -1,0 +1,15 @@
+yob
+id_patient
+sex
+addr_ward_home
+addr_dist_home
+addr_prov_home
+result
+ct_e
+ct_n
+ct_rdrp
+diag_proc
+reason
+sample_type
+date_sample
+id

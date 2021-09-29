@@ -1,18 +1,25 @@
 library(EpiNow2)
 library(tidyverse)
 
-no_case <- read_csv('./data/processed/no-case/no-case.csv')
+# no-case
+# no_case <- read_csv('./data/processed/no-case/no-case.csv')
+# no_case$date_report <- as.Date(no_case$X1)
+# reported_cases <- no_case %>% select('date_report', 'no_case')
+# names(reported_cases) <- c('date', 'confirm')
+
+# no-positive
+no_case <- read_csv('./data/processed/no-positive/no-positive.csv')
+no_case$date_report <- as.Date(no_case$X1)
+reported_cases <- no_case %>% select('date_report', 'no_positive')
+names(reported_cases) <- c('date', 'confirm')
+
 # no_case <- read_csv('./data/processed/no-death/no-death.csv')
 # no_case <- read_csv('./data/processed/ct-from-test-data/ct.csv')
-no_case$date_report <- as.Date(no_case$X1)
-# no_case$date_report <- as.Date(no_case$date_sample)
 
-reported_cases <- no_case %>% select('date_report', 'no_case')
 # reported_cases <- no_case %>% 
 #   select('date_report', 'no_positive') %>%
 #   slice(328:n())
 # reported_cases <- no_case %>% select('date_report', 'no_death')
-names(reported_cases) <- c('date', 'confirm')
 
 # breakpoint
 reported_cases$breakpoint <- 0
@@ -47,13 +54,13 @@ reporting_delay <- list(
 # summary(estimate_infection)
 # plot(estimate_infection)
 
-# model <- epinow(reported_cases = reported_cases,
-#                     generation_time = generation_time,
-#                     delays = delay_opts(incubation_period, reporting_delay),
-#                     rt = rt_opts(prior = list(mean = 1.1, sd = 0.5)),
-#                     horizon = 7,
-#                     target_folder = "./data/processed/forecast-by-epinow2",
-#                     stan = stan_opts(cores = 4))
+model <- epinow(reported_cases = reported_cases,
+                    generation_time = generation_time,
+                    delays = delay_opts(incubation_period, reporting_delay),
+                    rt = rt_opts(prior = list(mean = 1.1, sd = 0.5)),
+                    horizon = 7,
+                    target_folder = "./data/processed/forecast-by-epinow2",
+                    stan = stan_opts(cores = 4))
 
 
 
