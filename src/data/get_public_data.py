@@ -7,7 +7,7 @@ from data import util
 
 # %% Import
 df = pd.read_csv(
-    path.external.joinpath('public-data', 'data-covid-2021-09-12.csv')
+    path.external.joinpath('public-data', 'data-covid-2021-09-30.csv')
 )
 # df = pd.read_excel(
 #     path.external / 'public-data' / 'data-covid-2021-09-12.xlsx'
@@ -15,14 +15,13 @@ df = pd.read_csv(
 pop = pd.read_csv(path.reference / 'pop_1.csv', sep=',', dtype={'id_addiv': 'str'})
 addiv = pd.read_csv(path.reference / 'addiv.csv', sep=',', dtype={'id_addiv': 'str', 'of_addiv': 'str'})
 # %% Rename col
-with open(path.reference.joinpath('col-name-public-2.txt'), 'r') as file:
+with open(path.reference.joinpath('col-name-public-3.txt'), 'r') as file:
     df.columns = file.read().split('\n')
     
     
-df = df[['name_full', 'sex', 'yob',
-         'addr_prov_home', 'addr_dist_home', 'addr_ward_home', 'addr_home',
-         'date_report', 'date_positive',
-         'place_recognize']]
+# df = df[['name_full', 'sex', 'yob',
+#          'addr_prov_home', 'addr_dist_home', 'addr_ward_home', 'addr_home',
+#          'date_report', 'date_positive']]
 
 # %% Preprocess
 df = df.assign(
@@ -44,7 +43,7 @@ df = df.assign(
     addr_home = df.addr_home.astype('str').apply(util.compute_addr_x),
     addr_ward_home = df.addr_ward_home.astype('str').apply(util.preprocess_addr_ward),
     addr_prov_home = '79',
-    place_recognize = df.place_recognize.astype('str').apply(util.clean_place_recognize)
+    # place_recognize = df.place_recognize.astype('str').apply(util.clean_place_recognize)
 )
 
 # %% Encode district and ward

@@ -4,15 +4,15 @@ import os
 
 from src.config import path
 # %%
-rootdir = path.external / 'test-data'
-current_date = '2021-09-26'
+rootdir = path.external / 'pcr-data'
+current_date = '2021-09-28'
 
 # %% Read yesterday data
 usecols = ['id', 'id_patient', 'date_sample', 'sex', 'yob', 'reason', 'result',
          'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
          'ct_e', 'ct_n', 'ct_rdrp', 'diag_proc', 'sample_type']
 df = pd.read_csv(
-    path.raw / 'test-data' / 'test-merge-2021-09-25.csv',
+    path.raw / 'pcr-data' / 'merge-2021-09-27.csv',
     usecols=usecols)
 
 # %% Read today data
@@ -79,6 +79,6 @@ df = df.append(df_today)
 
 # %%
 df.to_csv(
-    path.raw / 'test-data' / ('test-merge-' + current_date + '.csv' ),
+    path.raw / 'pcr-data' / ('merge-' + current_date + '.csv' ),
     index=False,
     sep=',')

@@ -2,6 +2,7 @@
 
 import pandas as pd
 from config import path
+import data.util as util
 
 # %%
 df = (pd.read_csv(
@@ -192,7 +193,7 @@ def get_no_event_by_group(data,
     return df_3
 # %% Get no_case
 pop_total = int(pop[pop.id_addiv == '79']['pop'][0])
-no_case = get_no_event(data=df, pop=pop_total,
+no_case = util.get_no_event(data=df, pop=pop_total,
                       date_col='date_report',
                       no_col='no_case', rolling=7)
 
@@ -201,11 +202,13 @@ no_case = get_no_event(data=df, pop=pop_total,
 data_in_get_no_case_by_group_adh = (
     df[df.addr_dist_home != 'UNKN']
 )
-no_case_by_adh = get_no_event_by_group(
+no_case_by_adh = util.get_no_event_by_group(
     data_in_get_no_case_by_group_adh,
     group_col='addr_dist_home',
     date_col = 'date_report',
     no_col = 'no_case',
+    pop=pop,
+    addiv=addiv,
     available_pop=True,
     getname=True)
 
@@ -213,11 +216,13 @@ no_case_by_adh = get_no_event_by_group(
 data_in_get_no_case_by_group_ag = (
     df
 )
-no_case_by_ag = get_no_event_by_group(
+no_case_by_ag = util.get_no_event_by_group(
     data_in_get_no_case_by_group_ag,
     group_col='age_group',
     date_col = 'date_report',
     no_col = 'no_case',
+    pop=pop,
+    addiv=addiv,
     available_pop=False,
     getname=False)
 
@@ -226,11 +231,13 @@ no_case_by_ag = get_no_event_by_group(
 data_in_get_no_case_by_group_sex = (
     df[df.sex != 'NAN']
 )
-no_case_by_sex = get_no_event_by_group(
+no_case_by_sex = util.get_no_event_by_group(
     data_in_get_no_case_by_group_sex,
     group_col='sex',
     date_col = 'date_report',
     no_col = 'no_case',
+    pop=pop,
+    addiv=addiv,
     available_pop=False,
     getname=False)
 # %%

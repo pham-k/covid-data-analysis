@@ -161,6 +161,8 @@ def encode_addr_dist(row):
                'VĨNH LỘC A', 'TÂN QUÝ TÂY', 'TT TÂN TÚC',
                'HUYEN BINH CHANH', 'QUAN BINH CHANH']:
         return '785'
+    elif d in ['999', 'THANH PHO THU DUC', 'TP THU DUC', 'TPTD']:
+        return '999'
     else:
         return 'UNKN'
     
@@ -333,3 +335,61 @@ def get_no_event_by_group(data, pop, addiv,
             .rename(columns={'name_addiv_2': group_col})
         )
     return df_3
+
+
+def get_no(data, date_col='date_report', no_col='no_case'):
+    """
+    Count number of (no) event by date
+    
+    Args:
+        data: Data frame, input data frame
+        date_col: String, name of date column, default 'date_report'
+        no_col: String, name of event count column, default 'no_case'
+        
+    Return:
+        A data frame
+    """
+    # number of events by date, reindex to fill missing date entry with 0
+    idx = pd.date_range(start=data[date_col].min(), end=data[date_col].max(), freq='D')
+    df = (
+        data[[date_col]]
+        .groupby(date_col)
+        .apply(lambda x: len(x))
+        .to_frame(name=no_col)
+        .reindex(idx)
+        .fillna(0)
+        .rename_axis('date')
+    )
+    
+    return df
+
+def get_no_by_group(data, group_col = [], date_col='date_report', no_col='no_case'):
+    """
+    Count number of (no) event by group and date
+    
+    Args:
+        data: Data frame, input data frame
+        group_col: list of group columns
+        date_col: String, name of date column, default date_col
+        no_col: String, name of event count column, default no_col
+    
+    Return:
+        A data frame
+    """
+    df = (
+        data.groupby(group_col + [date_col])
+        .apply(lambda x: len(x)).to_frame(name=no_col)
+        .reset_index()
+        .set_index(date_col)
+        .groupby(group_col)
+        [no_col]
+        .resample('D').sum()
+        .reset_index()
+        .pivot(index=date_col, columns=group_col, values=no_col)
+        .fillna(0)
+        .stack(list(range(len(group_col))))
+        .reset_index()
+        .rename(columns={0: no_col, date_col: 'date'})
+        .set_index('date')
+    )
+    return df

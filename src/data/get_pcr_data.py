@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
 from src.config import path
-import util
+import data.util as util
 from datetime import date
 
 # %% Import
@@ -9,7 +9,7 @@ usecols = ['id', 'id_patient', 'date_sample', 'sex', 'yob', 'reason', 'result',
          'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
          'ct_e', 'ct_n', 'ct_rdrp', 'diag_proc', 'sample_type']
 raw = pd.read_csv(
-    path.raw / 'test-data' / 'test-merge-2021-09-26.csv',
+    path.raw / 'pcr-data' / 'merge-2021-09-28.csv',
     usecols=usecols)
 pop = pd.read_csv(path.reference / 'pop_1.csv', sep=',', dtype={'id_addiv': 'str'})
 addiv = pd.read_csv(path.reference / 'addiv.csv', sep=',', dtype={'id_addiv': 'str', 'of_addiv': 'str'})
@@ -120,7 +120,7 @@ df['addr_ward_home'] = df.id_addiv
 df = df.drop(columns=['id_addiv', 'dw'])
 
 # %% Export
-df.to_csv(path.interim.joinpath('test-data.csv'), index=False, sep=',')
+df.to_csv(path.interim.joinpath('pcr-data.csv'), index=False, sep=',')
 
 
 

@@ -1,0 +1,6 @@
+no
+addiv
+shot_1
+shot_2
+shot_1_cs
+shot_2_cs

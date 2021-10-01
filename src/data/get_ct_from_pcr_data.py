@@ -11,7 +11,7 @@ usecols = ['id', 'id_patient', 'date_sample', 'sex', 'yob', 'reason', 'result',
          'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
          'ct_e', 'ct_n', 'ct_rdrp', 'sample_type']
 raw = pd.read_csv(
-    path.raw / 'test-data' / 'test-merge-2021-09-26.csv',
+    path.raw / 'pcr-data' / 'merge-2021-09-28.csv',
     usecols = usecols)
 
 # %% Rename columns
@@ -24,6 +24,7 @@ raw = pd.read_csv(
 # %% Dedup
 raw = raw.drop_duplicates(['id', 'id_patient'])
 # dup = raw[raw.duplicated(['id', 'id_patient'])]
+# raw.drop(columns=['id', 'id_patient'], inplace=True)
 # %% Preprocess
 df = raw.assign(
     sex = raw.sex.astype('str').apply(ut.preprocess_string),
@@ -105,40 +106,37 @@ mask_addr = (
 df.loc[mask_addr, 'addr_prov_home'] = 'KHAC'
 df.loc[mask_addr, 'addr_dist_home'] = 'KHAC'
 
-# %% Get ct
+# %% !DEPRECATED ct
+# data_in_get_no_test = (
+#     df[(~df.reason.str.startswith('KIEM DICH'))
+#        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
+#     [['date_sample', 'id']]
+# )
 
+# data_in_get_no_positive = (
+#     df[(~df.reason.str.startswith('KIEM DICH'))
+#        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
+#     [['date_sample', 'positive']]
+# )
 
-data_in_get_no_test = (
-    df[(~df.reason.str.startswith('KIEM DICH'))
-       &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
-    [['date_sample', 'id']]
-)
+# data_in_get_no_positive_group_sample = (
+#     df[(~df.reason.str.startswith('KIEM DICH'))
+#        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
+#     [['date_sample', 'positive_group_sample']]
+# )
 
-data_in_get_no_positive = (
-    df[(~df.reason.str.startswith('KIEM DICH'))
-       &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
-    [['date_sample', 'positive']]
-)
-
-data_in_get_no_positive_group_sample = (
-    df[(~df.reason.str.startswith('KIEM DICH'))
-       &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
-    [['date_sample', 'positive_group_sample']]
-)
-
-no_test = ut.get_no_test(data_in_get_no_test)
-no_positive = ut.get_no_positive(data_in_get_no_positive)
-no_positive_group_sample = (
-    ut.get_no_positive_group_sample(
-        data_in_get_no_positive_group_sample))
-ct = ut.get_ct_from_test_data(no_test, no_positive, no_positive_group_sample)
-ct = (
-    ct.reset_index()
-    .rename(columns={'index': 'date_sample'})
-)
+# no_test = ut.get_no_test(data_in_get_no_test)
+# no_positive = ut.get_no_positive(data_in_get_no_positive)
+# no_positive_group_sample = (
+#     ut.get_no_positive_group_sample(
+#         data_in_get_no_positive_group_sample))
+# ct = ut.get_ct_from_test_data(no_test, no_positive, no_positive_group_sample)
+# ct = (
+#     ct.reset_index()
+#     .rename(columns={'index': 'date_sample'})
+# )
 
 # %% Get ct by addr_ward_home
-
 data_in_get_no_test_by_group_awh = (
     df[(~df.reason.str.startswith('KIEM DICH'))
        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
@@ -181,11 +179,11 @@ ct_by_awh = ut.get_ct_by_group_from_test_data(
     no_test_by_awh, no_positive_by_awh, no_positive_group_sample_by_awh,
     group = ['addr_dist_home', 'addr_ward_home'])
 
-# %% Get ct by addr_dist_home
+# %% !DEPRECATED Get ct by addr_dist_home
 
 data_in_get_no_test_by_group_adh = (
     df[(~df.reason.str.startswith('KIEM DICH'))
-       &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
+        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
     .query('addr_prov_home == "THANH PHO HO CHI MINH"')
     [['date_sample', 'addr_dist_home']]
     [(df.addr_dist_home  != 'NAN') & (df.addr_dist_home  != 'THANH PHO THU DUC') & (df.addr_prov_home  != 'NAN')]
@@ -193,11 +191,11 @@ data_in_get_no_test_by_group_adh = (
 
 # Number of test by date_sample and addr_dist_home
 no_test_by_adh = ut.get_no_test_by_group(data_in_get_no_test_by_group_adh,
-                                       group = ['addr_dist_home'])
+                                        group = ['addr_dist_home'])
 
 data_in_get_no_positive_by_group_adh = (
     df[(~df.reason.str.startswith('KIEM DICH'))
-       &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
+        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
     .query('addr_prov_home == "THANH PHO HO CHI MINH"')
     [['date_sample', 'addr_dist_home', 'positive']]
     [(df.addr_dist_home  != 'NAN') & (df.addr_dist_home  != 'THANH PHO THU DUC') & (df.addr_prov_home  != 'NAN')]
@@ -205,11 +203,11 @@ data_in_get_no_positive_by_group_adh = (
 
 # Number of positive result by date_sample and addr_dist_home
 no_positive_by_adh = ut.get_no_positive_by_group(data_in_get_no_positive_by_group_adh,
-                                               group = ['addr_dist_home'])
+                                                group = ['addr_dist_home'])
 
 data_in_get_no_positive_group_sample_by_group_adh = (
     df[(~df.reason.str.startswith('KIEM DICH'))
-       &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
+        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
     .query('addr_prov_home == "THANH PHO HO CHI MINH"')
     [['date_sample', 'addr_dist_home', 'positive_group_sample']]
     [(df.addr_dist_home  != 'NAN') & (df.addr_dist_home  != 'THANH PHO THU DUC') & (df.addr_prov_home  != 'NAN')]
@@ -227,7 +225,6 @@ ct_by_adh = (
         group = ['addr_dist_home']))
 
 # %% Get ct by age_group
-
 data_in_get_no_test_by_group_ag = (
     df[(~df.reason.str.startswith('KIEM DICH'))
        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
@@ -276,7 +273,6 @@ ct_by_ag = (
         group = ['age_group']))
 
 # %% Get ct by sex
-
 data_in_get_no_test_by_group_sex = (
     df[(~df.reason.str.startswith('KIEM DICH'))
        &(~df.reason.str.contains('THEO DOI'))] # remove reason KIEM DICH
@@ -336,13 +332,10 @@ ct_summary_by_sex = (
     })
 )
 # %% Export
-ct.to_csv(path.processed / 'ct-from-test-data' / 'ct.csv', index=False)
-ct_by_awh.to_csv(path.processed / 'ct-by-group-from-test-data' / 'ct-by-awh.csv', index=False)
-ct_by_adh.to_csv(path.processed / 'ct-by-group-from-test-data' / 'ct-by-adh.csv', index=False)
-ct_by_ag.to_csv(path.processed / 'ct-by-group-from-test-data' / 'ct-by-ag.csv', index=False)
-ct_by_sex.to_csv(path.processed / 'ct-by-group-from-test-data' / 'ct-by-sex.csv', index=False)
-ct_summary_by_sex.to_csv(path.processed / 'ct-by-group-from-test-data' / 'ct-summary-by-sex.csv', index=False)
-
-
-
+# ct.to_csv(path.processed / 'ct-from-test-data' / 'ct.csv', index=False)
+ct_by_awh.to_csv(path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-awh.csv', index=False)
+ct_by_adh.to_csv(path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-adh.csv', index=False)
+ct_by_ag.to_csv(path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-ag.csv', index=False)
+ct_by_sex.to_csv(path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-sex.csv', index=False)
+ct_summary_by_sex.to_csv(path.processed / 'ct-by-group-from-pcr-data' / 'ct-summary-by-sex.csv', index=False)
 

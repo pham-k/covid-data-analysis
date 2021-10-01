@@ -13,19 +13,19 @@ from src.config import path
 
 # %% Import
 ct = pd.read_csv(
-    path.processed / 'ct-from-test-data' / 'ct.csv', index_col='date_sample'
+    path.processed / 'ct-from-pcr-data' / 'ct.csv', index_col='date_sample'
     )
 ct_by_awh = pd.read_csv(
-    path.processed / 'ct-by-group-from-test-data' / 'ct-by-awh.csv')
+    path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-awh.csv')
 
 ct_by_adh = pd.read_csv(
-    path.processed / 'ct-by-group-from-test-data' / 'ct-by-adh.csv')
+    path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-adh.csv')
 
 ct_by_ag = pd.read_csv(
-    path.processed / 'ct-by-group-from-test-data' / 'ct-by-ag.csv')
+    path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-ag.csv')
 
 ct_by_sex = pd.read_csv(
-    path.processed / 'ct-by-group-from-test-data' / 'ct-by-sex.csv')
+    path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-sex.csv')
 
 # %% Plot no_test, no_positive by date_sample
 def addlabels(x,y):

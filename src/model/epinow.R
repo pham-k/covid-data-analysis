@@ -8,9 +8,15 @@ library(tidyverse)
 # names(reported_cases) <- c('date', 'confirm')
 
 # no-positive
-no_case <- read_csv('./data/processed/no-positive/no-positive.csv')
-no_case$date_report <- as.Date(no_case$X1)
-reported_cases <- no_case %>% select('date_report', 'no_positive')
+# no_case <- read_csv('./data/processed/no-positive/no-positive.csv')
+# no_case$date_report <- as.Date(no_case$date_report)
+# reported_cases <- no_case %>% select('date_report', 'no_positive')
+# names(reported_cases) <- c('date', 'confirm')
+
+# no-test-pos
+no_case <- read_csv('./data/processed/no-test/no-test-pos.csv')
+no_case$date <- as.Date(no_case$date)
+reported_cases <- no_case %>% select('date', 'no_test_pos')
 names(reported_cases) <- c('date', 'confirm')
 
 # no_case <- read_csv('./data/processed/no-death/no-death.csv')

@@ -1,0 +1,11 @@
+date_report
+id_patient
+name_full
+yob
+sex
+tel
+addr_home
+addr_prov_home
+addr_dist_home
+addr_ward_home
+date_positive

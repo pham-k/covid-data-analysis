@@ -12,20 +12,20 @@ import numpy as np
 from src.config import path
 
 # %% Import
-ct = pd.read_csv(
-    path.processed / 'ct-from-test-data' / 'ct.csv'
-    )
+# ct = pd.read_csv(
+#     path.processed / 'ct-from-test-data' / 'ct.csv'
+#     )
 ct_by_awh = pd.read_csv(
-    path.processed / 'ct-by-group-from-test-data' / 'ct-by-awh.csv')
+    path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-awh.csv')
 
 ct_by_adh = pd.read_csv(
-    path.processed / 'ct-by-group-from-test-data' / 'ct-by-adh.csv')
+    path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-adh.csv')
 
 ct_by_ag = pd.read_csv(
-    path.processed / 'ct-by-group-from-test-data' / 'ct-by-ag.csv')
+    path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-ag.csv')
 
 ct_by_sex = pd.read_csv(
-    path.processed / 'ct-by-group-from-test-data' / 'ct-by-sex.csv')
+    path.processed / 'ct-by-group-from-pcr-data' / 'ct-by-sex.csv')
 # %% Declare function
 def plot_heatmap(df, title, prefix, name,
                  start_date, end_date,
@@ -68,7 +68,7 @@ def plot_heatmap(df, title, prefix, name,
         # + start_date + '-' 
         # + end_date 
         + '.png')
-    output_path = path.processed / 'ct-by-group-from-test-data' / 'image' / filename
+    output_path = path.processed / 'ct-by-group-from-pcr-data' / 'image' / filename
     
     ax.set_title(title)
 #     fig.tight_layout()
@@ -78,49 +78,49 @@ def plot_heatmap(df, title, prefix, name,
         bbox_inches='tight')
     plt.close(fig)
     
-# %% Plot heatmap ct
-adh = list(ct_by_adh.addr_dist_home.unique())
+# %% !DEPRECATED Plot heatmap ct
+# adh = list(ct_by_adh.addr_dist_home.unique())
 
-start_date = '2021-08-01'
-end_date = '2021-09-26'
-prefix = 'ct-by'
+# start_date = '2021-08-01'
+# end_date = '2021-09-28'
+# prefix = 'ct-by'
 
-df_adh = (
-    ct_by_adh[
-        (ct_by_adh.date_sample >= start_date)
-        & (ct_by_adh.date_sample <= end_date)]
-    [['date_sample', 'addr_dist_home', 'ct']]
-)
+# df_adh = (
+#     ct_by_adh[
+#         (ct_by_adh.date_sample >= start_date)
+#         & (ct_by_adh.date_sample <= end_date)]
+#     [['date_sample', 'addr_dist_home', 'ct']]
+# )
 
-df_aph = (
-    ct[
-        (ct.date_sample >= start_date)
-        & (ct.date_sample <= end_date)]
-    [['date_sample', 'ct']]
-)
+# df_aph = (
+#     ct[
+#         (ct.date_sample >= start_date)
+#         & (ct.date_sample <= end_date)]
+#     [['date_sample', 'ct']]
+# )
 
-df_aph['addr_dist_home'] = 'THANH PHO HO CHI MINH'
+# df_aph['addr_dist_home'] = 'THANH PHO HO CHI MINH'
 
-df = (
-    df_adh.append(df_aph)
-    .pivot(
-        # index='addr_dist_home',
-        # columns='date_sample',
-        columns='addr_dist_home',
-        index='date_sample',
-        values='ct'
-    )
-)
+# df = (
+#     df_adh.append(df_aph)
+#     .pivot(
+#         # index='addr_dist_home',
+#         # columns='date_sample',
+#         columns='addr_dist_home',
+#         index='date_sample',
+#         values='ct'
+#     )
+# )
 
-plot_heatmap(df, title='CT theo quan huyen', prefix=prefix, name='adh',
-              start_date=start_date, end_date=end_date,
-              width=20, height=10)    
+# plot_heatmap(df, title='CT theo quan huyen', prefix=prefix, name='adh',
+#               start_date=start_date, end_date=end_date,
+#               width=20, height=10)    
 # %% Plot heatmap ct by awh
 dist = list(ct_by_adh.addr_dist_home.unique())
 # dist = dist[0:3] # to test
 
 start_date = '2021-08-01'
-end_date = '2021-09-26'
+end_date = '2021-09-28'
 prefix = 'ct-by-awh'
 
 ct_by_awh['ct'] = ct_by_awh['ct'].fillna(0).replace(0, 4)
@@ -166,7 +166,7 @@ for d in dist:
 ag = list(ct_by_ag.age_group.unique())
 
 start_date = '2021-08-01'
-end_date = '2021-09-26'
+end_date = '2021-09-28'
 prefix = 'ct-by'
 
 df = (
@@ -189,7 +189,7 @@ plot_heatmap(df, title='CT theo nhom tuoi', prefix=prefix, name='ag',
 sex = list(ct_by_sex.sex.unique())
 
 start_date = '2021-08-01'
-end_date = '2021-09-26'
+end_date = '2021-09-28'
 prefix = 'ct-by'
 
 df = (
