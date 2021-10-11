@@ -21,11 +21,11 @@ ct = pd.read_csv(
 # ct_by_awh = pd.read_csv(
 #     path.processed / 'ct-by-group-from-test-data' / 'ct-by-awh.csv')
 
-ct_by_adh = pd.read_csv(
-    path.processed / 'metrics-from-test-data' / 'ct-by-adh.csv',
-    index_col='date',
-    parse_dates=True,
-    dtype={'addr_dist_home': 'str'})
+# ct_by_adh = pd.read_csv(
+#     path.processed / 'metrics-from-test-data' / 'ct-by-adh.csv',
+#     index_col='date',
+#     parse_dates=True,
+#     dtype={'addr_dist_home': 'str'})
 
 # ct_by_ag = pd.read_csv(
 #     path.processed / 'ct-by-group-from-test-data' / 'ct-by-ag.csv')
@@ -40,15 +40,16 @@ addiv = pd.read_csv(
 
 # %%
 ct['ct'] = ct['ct'].fillna(1).astype('int')
-ct_by_adh['ct'] = ct_by_adh['ct'].fillna(1).astype('int')
-ct_by_adh = (
-    ct_by_adh
-    .reset_index()
-    .merge(addiv, how='left',
-           left_on='addr_dist_home', right_on='id_addiv')
-    .drop(columns=['addr_dist_home', 'id_addiv'])
-    .rename(columns={'name_addiv': 'addr_dist_home'})
-    .set_index('date'))
+
+# ct_by_adh['ct'] = ct_by_adh['ct'].fillna(1).astype('int')
+# ct_by_adh = (
+#     ct_by_adh
+#     .reset_index()
+#     .merge(addiv, how='left',
+#             left_on='addr_dist_home', right_on='id_addiv')
+#     .drop(columns=['addr_dist_home', 'id_addiv'])
+#     .rename(columns={'name_addiv': 'addr_dist_home'})
+#     .set_index('date'))
 # %% Declare function
 def plot_heatmap(df, title, prefix, name,
                  start_date, end_date,
@@ -102,19 +103,19 @@ def plot_heatmap(df, title, prefix, name,
     plt.close(fig)
     
 # %% Plot heatmap ct
-adh = list(ct_by_adh['addr_dist_home'].unique())
+# adh = list(ct_by_adh['addr_dist_home'].unique())
 
 start_date = '2021-08-01'
 end_date = '2021-09-28'
 prefix = 'ct-by'
 
-df_adh = (
-    ct_by_adh[
-        (ct_by_adh.index >= start_date)
-        & (ct_by_adh.index <= end_date)]
-    [['addr_dist_home', 'ct']]
-    .reset_index()
-)
+# df_adh = (
+#     ct_by_adh[
+#         (ct_by_adh.index >= start_date)
+#         & (ct_by_adh.index <= end_date)]
+#     [['addr_dist_home', 'ct']]
+#     .reset_index()
+# )
 
 df_aph = (
     ct[
@@ -124,25 +125,37 @@ df_aph = (
     .reset_index()
 )
 
-df_adh['date'] = df_adh['date'].dt.strftime('%Y-%m-%d')
+# df_adh['date'] = df_adh['date'].dt.strftime('%Y-%m-%d')
 df_aph['date'] = df_aph['date'].dt.strftime('%Y-%m-%d')
 
 df_aph['addr_dist_home'] = 'THANH PHO HO CHI MINH'
 
+# df = (
+#     df_adh
+#     .append(df_aph)
+#     .pivot(
+#         # index='addr_dist_home',
+#         # columns='date_sample',
+#         columns='addr_dist_home',
+#         index='date',
+#         values='ct'
+#     )
+# )
+
 df = (
-    df_adh.append(df_aph)
+    df_aph
     .pivot(
         # index='addr_dist_home',
         # columns='date_sample',
-        columns='addr_dist_home',
-        index='date',
+        columns='date',
+        index='addr_dist_home',
         values='ct'
     )
 )
 
 plot_heatmap(df, title='CT theo quan huyen', prefix=prefix, name='adh',
               start_date=start_date, end_date=end_date,
-              width=20, height=10)    
+              width=20, height=1)    
 # %% Plot heatmap ct by awh
 # dist = list(ct_by_adh.addr_dist_home.unique())
 # # dist = dist[0:3] # to test

@@ -13,11 +13,11 @@ import os
 from src.config import path
 # %%
 rootdir = path.external / 'vaccine-data'
-current_date = '2021-09-28'
+current_date = '2021-10-04'
 
 # %%
 df = pd.read_csv(
-    path.raw / 'vaccine-data' / 'merge-2021-09-27.csv'
+    path.raw / 'vaccine-data' / 'merge-2021-10-03.csv'
 )
 
 df['date_report'] = pd.to_datetime(df['date_report'])

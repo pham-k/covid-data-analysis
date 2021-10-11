@@ -13,7 +13,7 @@ from datetime import date
 
 # %%
 raw = pd.read_csv(
-    path.raw / 'vaccine-data' / 'merge-2021-09-26.csv')
+    path.raw / 'vaccine-data' / 'merge-2021-10-04.csv')
 addiv = pd.read_csv(path.reference / 'addiv.csv', sep=',', dtype={'id_addiv': 'str', 'of_addiv': 'str'})
 # %%
 df = raw.assign(

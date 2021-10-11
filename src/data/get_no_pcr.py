@@ -38,6 +38,13 @@ df['age_group'] = pd.cut(
     right = False
 )
 
+df['age_group_children'] = pd.cut(
+    df.age,
+    bins = [0, 6, 12, 17, 200],
+    labels = ['0 - 5', '6 - 11', '12 - 16', '> 16'],
+    right = False
+)
+
 df = df[(df.date_sample >= '2021-05-27')]
 df = df.rename(columns={'date_sample': 'date_report'})
 
@@ -179,6 +186,38 @@ no_pcr_pos_by_adh = util.get_no_by_group(
     no_col = 'no_pcr_pos',
 )
 
+# %% tong pcr theo nhom tuoi tre em
+data_in_get_no_test_by_group_agc = (
+    df[(~df.reason.str.startswith('KIEM DICH'))
+        & (~df.reason.str.contains('THEO DOI'))
+        & (df.addr_prov_home == '79')
+        & (df.age_group_children != '> 16')
+        & (df.age_group_children.notna())] 
+)
+
+no_pcr_by_agc = util.get_no_by_group(
+    data_in_get_no_test_by_group_agc,
+    group_col =['age_group_children'],
+    date_col = 'date_report',
+    no_col = 'no_pcr',
+)
+
+# %% tong pcr duong theo nhom tuoi tre em
+data_in_get_no_test_by_group_agc = (
+    df[(~df.reason.str.startswith('KIEM DICH'))
+        & (~df.reason.str.contains('THEO DOI'))
+        & (df.result == 'DUONG TINH')
+        & (df.addr_prov_home == '79')
+        & (df.age_group_children != '> 16')
+        & (df.age_group_children.notna())] 
+)
+
+no_pcr_pos_by_agc = util.get_no_by_group(
+    data_in_get_no_test_by_group_agc,
+    group_col =['age_group_children'],
+    date_col = 'date_report',
+    no_col = 'no_pcr_pos',
+)
 # %% Get no test by age group
 # data_in_get_no_test_by_group_ag = (
 #     df[(~df.reason.str.startswith('KIEM DICH'))
@@ -260,6 +299,10 @@ no_pcr_by_adh.to_csv(
     path.processed / 'no-pcr' / 'no-pcr-by-adh.csv',
 )
 
+no_pcr_by_agc.to_csv(
+    path.processed / 'no-pcr' / 'no-pcr-by-agc.csv',
+)
+
 # no_test_by_awh.to_csv(
 #     path.processed / 'no-test-by-group' / 'no-test-by-awh.csv',
 #     index=False)
@@ -278,6 +321,10 @@ no_pcr_pos.to_csv(
 
 no_pcr_pos_by_adh.to_csv(
     path.processed / 'no-pcr' / 'no-pcr-pos-by-adh.csv',
+)
+
+no_pcr_pos_by_agc.to_csv(
+    path.processed / 'no-pcr' / 'no-pcr-pos-by-agc.csv',
 )
 
 # no_positive_by_awh.to_csv(

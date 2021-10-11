@@ -7,7 +7,14 @@ from data import util
 
 # %% Import
 df = pd.read_csv(
-    path.external.joinpath('public-data', 'data-covid-2021-09-30.csv')
+    path.external / 'public-data' / 'data-covid-2021-10-01.csv',
+    dtype={
+        'id_patient': str,
+        'name_full': str,
+        'yob': float,
+        'sex': str,
+        'tel': str,
+        }
 )
 # df = pd.read_excel(
 #     path.external / 'public-data' / 'data-covid-2021-09-12.xlsx'

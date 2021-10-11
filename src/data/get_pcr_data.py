@@ -9,7 +9,7 @@ usecols = ['id', 'id_patient', 'date_sample', 'sex', 'yob', 'reason', 'result',
          'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
          'ct_e', 'ct_n', 'ct_rdrp', 'diag_proc', 'sample_type']
 raw = pd.read_csv(
-    path.raw / 'pcr-data' / 'merge-2021-09-28.csv',
+    path.raw / 'pcr-data' / 'merge-2021-10-08.csv',
     usecols=usecols)
 pop = pd.read_csv(path.reference / 'pop_1.csv', sep=',', dtype={'id_addiv': 'str'})
 addiv = pd.read_csv(path.reference / 'addiv.csv', sep=',', dtype={'id_addiv': 'str', 'of_addiv': 'str'})

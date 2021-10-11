@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = empty-project-type
-recent_files = ['src/data/get_public_data.py', 'src/data/get_metrics_from_test_data.py']
+recent_files = ['src/data/get_no_qtest.py', 'src/data/merge_pcr_data.py', 'src/data/get_no_pcr.py', 'src/data/get_no_test.py', 'src/data/get_metrics_from_test_data.py', 'src/data/get_pcr_data.py']
 
 [main]
 version = 0.2.0

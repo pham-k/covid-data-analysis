@@ -13,7 +13,7 @@ from config import path
 no_ecmo_total = pd.read_csv(
     path.processed / 'metrics-from-treatment-data' / 'no-ecmo-total.csv',
     sep=',',
-    index_col='date_report'
+    index_col='date_report',
 )
 
 no_ecmo_in_use = pd.read_csv(
@@ -88,8 +88,8 @@ no_test = pd.read_csv(
     index_col='date_report'
 )
 
-no_positive = pd.read_csv(
-    path.processed / 'no-positive' / 'no-positive.csv',
+no_pcr_pos = pd.read_csv(
+    path.processed / 'no-pcr' / 'no-pcr-pos.csv',
     sep=',',
     index_col='date_report'
 )
@@ -178,7 +178,7 @@ health_system_metrics = (
     no_oxy_total
     .join(no_oxy_in_use)
     .join(no_death['no_death'])
-    .join(no_positive['no_positive'])
+    .join(no_pcr_pos['no_pcr_pos'])
 )
 
 health_system_metrics['proportion_of_occupied_bed_with_oxy'] = (
@@ -188,7 +188,7 @@ health_system_metrics['proportion_of_occupied_bed_with_oxy'] = (
 
 health_system_metrics['crude_fatality_rate'] = (
     health_system_metrics['no_death']
-    / health_system_metrics['no_positive']
+    / health_system_metrics['no_pcr_pos']
 )
 
 # %%

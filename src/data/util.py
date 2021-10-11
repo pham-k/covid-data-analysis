@@ -358,7 +358,7 @@ def get_no(data, date_col='date_report', no_col='no_case'):
         .to_frame(name=no_col)
         .reindex(idx)
         .fillna(0)
-        .rename_axis('date')
+        .rename_axis('date_report')
     )
     
     return df
@@ -389,7 +389,7 @@ def get_no_by_group(data, group_col = [], date_col='date_report', no_col='no_cas
         .fillna(0)
         .stack(list(range(len(group_col))))
         .reset_index()
-        .rename(columns={0: no_col, date_col: 'date'})
-        .set_index('date')
+        .rename(columns={0: no_col, date_col: 'date_report'})
+        .set_index('date_report')
     )
     return df

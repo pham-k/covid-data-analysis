@@ -13,10 +13,10 @@ from src.config import path
 
 # %%
 rootdir = path.external / 'treatment-data'
-current_date = '2021-09-25'
+current_date = '2021-10-09'
 
 # %% Read yesterday data
-df = pd.read_csv(path.raw / 'treatment-data' / 'merge-2021-09-24.csv')
+df = pd.read_csv(path.raw / 'treatment-data' / 'merge-2021-10-08.csv')
 with open(path.reference.joinpath('col-name-treatment.txt'), 'r') as file:
     df.columns = file.read().split('\n')
 
@@ -27,11 +27,14 @@ df.loc[:,df.columns.str.startswith('no')] = (
 df_today = pd.read_excel(
     rootdir / (current_date + '.xlsx'),
     skiprows=3,
-    header=0
+    header=0,
+    sheet_name=2,
+    usecols=range(49)
 )
 
 # exclude summary row
-df_today = df_today.iloc[:-5,:]
+# df_today = df_today.iloc[:-5,:]
+
 df_today['date_report'] = pd.to_datetime(current_date)
 with open(path.reference.joinpath('col-name-treatment.txt'), 'r') as file:
     df_today.columns = file.read().split('\n')
