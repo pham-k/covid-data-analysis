@@ -14,9 +14,15 @@ library(tidyverse)
 # names(reported_cases) <- c('date', 'confirm')
 
 # no-test-pos
-no_case <- read_csv('./data/processed/no-test/no-test-pos.csv')
-no_case$date <- as.Date(no_case$date)
-reported_cases <- no_case %>% select('date', 'no_test_pos')
+# no_case <- read_csv('./data/processed/no-test/no-test-pos.csv')[0:127,]
+# no_case$date <- as.Date(no_case$date_report)
+# reported_cases <- no_case %>% select('date', 'no_test_pos')
+# names(reported_cases) <- c('date', 'confirm')
+
+# no-death-from-treatment
+no_death <- read_csv('./data/processed/no-death-from-treatment-data/no-death.csv')[0:59,0:2]
+no_death$date <- as.Date(no_death$date_report)
+reported_cases <- no_death %>% select('date', 'no_death')
 names(reported_cases) <- c('date', 'confirm')
 
 # no_case <- read_csv('./data/processed/no-death/no-death.csv')
@@ -29,13 +35,13 @@ names(reported_cases) <- c('date', 'confirm')
 
 # breakpoint
 reported_cases$breakpoint <- 0
-reported_cases[reported_cases$date == as.Date("2021-05-31"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-06-14"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-06-19"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-07-09"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-07-19"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-07-27"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-08-01"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-05-31"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-06-14"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-06-19"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-07-09"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-07-19"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-07-27"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-08-01"), 'breakpoint'] <- 1
 reported_cases[reported_cases$date == as.Date("2021-08-10"), 'breakpoint'] <- 1
 reported_cases[reported_cases$date == as.Date("2021-08-15"), 'breakpoint'] <- 1
 reported_cases[reported_cases$date == as.Date("2021-08-23"), 'breakpoint'] <- 1
@@ -57,7 +63,7 @@ reporting_delay <- list(
 #   stan = stan_opts(cores = 4)
 # )
 
-# summary(estimate_infection)
+# summary(model)
 # plot(estimate_infection)
 
 model <- epinow(reported_cases = reported_cases,

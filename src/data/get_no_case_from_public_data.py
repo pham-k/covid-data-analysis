@@ -193,9 +193,12 @@ def get_no_event_by_group(data,
     return df_3
 # %% Get no_case
 pop_total = int(pop[pop.id_addiv == '79']['pop'][0])
-no_case = util.get_no_event(data=df, pop=pop_total,
-                      date_col='date_report',
-                      no_col='no_case', rolling=7)
+no_case = util.get_no_event(
+    data=df,
+    pop=pop_total,
+    date_col='date_report',
+    no_col='no_case',
+    rolling=7)
 
 # %% Get incidence by district
 # Only valid district code

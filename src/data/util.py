@@ -104,24 +104,24 @@ def compute_addr_x(row):
     
 def encode_addr_dist(row):
     d = str(row).upper().strip()
-    if d in ['760', 'QA01', '1', '01', 'QUẬN 1', 'QUAN 01',
+    if d in ['760', 'QA01', '1', '01', 'QUẬN 1', 'QUAN 01', 'QUAN 1',
              'BẾN NGHÉ', 'TÂN ĐỊNH', 'NGUYỄN CƯ TRINH']:
         return '760'
-    elif d in ['769', 'QA02', '2', '02', 'QUẬN 2', 'QUAN 02']:
+    elif d in ['769', 'QA02', '2', '02', 'QUẬN 2', 'QUAN 02', 'QUAN 2',]:
         return '769'
-    elif d in ['770', 'QA03', '3', '03', 'QUAN 03']:
+    elif d in ['770', 'QA03', '3', '03', 'QUAN 03', 'QUAN 3',]:
         return '770'
-    elif d in ['773', 'QA04', '4', '04', 'QUAN 04']:
+    elif d in ['773', 'QA04', '4', '04', 'QUAN 04', 'QUAN 4',]:
         return '773'
-    elif d in ['774', 'QA05', '5', '05', 'QUAN 05']:
+    elif d in ['774', 'QA05', '5', '05', 'QUAN 05', 'QUAN 5',]:
         return '774'
-    elif d in ['775', 'QA06', '6', '06', 'QUẬN 6', 'QUAN 06']:
+    elif d in ['775', 'QA06', '6', '06', 'QUẬN 6', 'QUAN 06', 'QUAN 6',]:
         return '775'
-    elif d in ['778', 'QA07', '7', '07', 'QUAN 07']:
+    elif d in ['778', 'QA07', '7', '07', 'QUAN 07', 'QUAN 7',]:
         return '778'
-    elif d in ['776', 'QA08', '8', '08', 'QUẬN 8', 'QUAN 08']:
+    elif d in ['776', 'QA08', '8', '08', 'QUẬN 8', 'QUAN 08', 'QUAN 8',]:
         return '776'
-    elif d in ['763', 'QA09', '9', '09', 'QUẬN 9', 'QUAN 09']:
+    elif d in ['763', 'QA09', '9', '09', 'QUẬN 9', 'QUAN 09', 'QUAN 9',]:
         return '763'
     elif d in ['771', 'QA10', '10', 'QUẬN 10', 'QUAN 10']:
         return '771'
@@ -132,7 +132,7 @@ def encode_addr_dist(row):
     elif d in ['764', 'QGVP', 'GÒ VẤP', 'GO VAP', 'QUAN GO VAP']:
         return '764'
     elif d in ['QHMN', 'HÓC MÔN', 'HOC MON', 'THÁI TAM THÂN',
-               'XUÂN THỚI THƯỢNG', 'HUYEN HOC MON']:
+               'XUÂN THỚI THƯỢNG', 'HUYEN HOC MON', 'QUAN HOC MON']:
         return '784'
     elif d in ['787', 'QCGI', 'CẦN GIỜ', 'CAN GIO', 'HUYEN CAN GIO']:
         return '787'

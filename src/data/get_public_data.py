@@ -2,19 +2,18 @@
 import pandas as pd
 import pathlib
 # from config import path
-import config.path as path
+import src.config.path as path
 from data import util
 
 # %% Import
 df = pd.read_csv(
-    path.external / 'public-data' / 'data-covid-2021-10-01.csv',
+    path.external / 'public-data' / 'data-covid-2021-10-13.csv',
     dtype={
         'id_patient': str,
         'name_full': str,
         'yob': float,
         'sex': str,
-        'tel': str,
-        }
+        'tel': str,}
 )
 # df = pd.read_excel(
 #     path.external / 'public-data' / 'data-covid-2021-09-12.xlsx'
