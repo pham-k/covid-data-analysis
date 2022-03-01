@@ -7,16 +7,17 @@ Created on Tue Sep 21 11:52:17 2021
 """
 
 import pandas as pd
-import os
+import sys
+sys.path.append('/home/kyo/Documents/script/covid-data-analysis/')
 
 from src.config import path
 
 # %%
-rootdir = path.external / 'f0-home-data'
-current_date = '2021-11-02'
+# rootdir = path.external / 'f0-home-data'
+current_date = '2022-02-26'
 
 # %% Read yesterday data
-df = pd.read_csv(path.raw / 'qtest-data' / 'merge-2021-11-01.csv')
+df = pd.read_csv(path.raw / 'qtest-data' / 'merge-2022-02-25.csv')
 df['date_sample'] = pd.to_datetime(df.date_sample)
 # %% Read today data
 df_today = pd.read_excel(

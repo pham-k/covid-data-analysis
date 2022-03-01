@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
+import sys
+sys.path.append('/home/kyo/Documents/script/covid-data-analysis/')
 from src.config import path
-import data.util as util
+import util
 from datetime import date
 
 # %% Import
 usecols = ['id', 'date_sample', 'sex', 'yob', 'reason', 'result',
          'addr_prov_home', 'addr_dist_home', 'addr_ward_home', 'vaccinated']
 raw = pd.read_csv(
-    path.raw / 'qtest-data' / 'merge-2021-11-02.csv',
+    path.raw / 'qtest-data' / 'merge-2022-02-26.csv',
     usecols=usecols,
     dtype={
-        'yob': int,
+        # 'yob': int,
         'id': str,
         'sex': str,
         'reason': str,
@@ -38,6 +40,9 @@ addiv = pd.read_csv(path.reference / 'addiv.csv', sep=',', dtype={'id_addiv': 's
 raw = raw.drop_duplicates(['id'])
 # dup = raw[raw.duplicated(['id'])]
 # %% Preprocess
+raw.loc[raw.yob == ' ', 'yob'] = None
+raw['yob'] = raw.yob.str[-4:]
+raw['yob'] = raw['yob'].astype('float')
 df = raw.assign(
     sex = raw.sex.astype('str').apply(util.preprocess_string),
     reason = raw.reason.astype('str').apply(util.preprocess_string),

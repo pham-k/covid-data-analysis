@@ -8,7 +8,8 @@ Created on Thu Sep 30 09:49:20 2021
 
 import pandas as pd
 from datetime import date
-
+import sys
+sys.path.append('/home/kyo/Documents/script/covid-data-analysis/')
 from src.config import path
 import src.data.util as util
 

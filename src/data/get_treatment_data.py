@@ -12,7 +12,7 @@ from data import util
 from datetime import date
 
 # %% Import
-raw = pd.read_csv(path.raw / 'treatment-data' / 'merge-2021-10-09.csv')
+raw = pd.read_csv(path.raw / 'treatment-data' / 'merge-2021-10-18.csv')
 pop = pd.read_csv(path.reference / 'pop_1.csv', sep=',', dtype={'id_addiv': 'str'})
 
 # %% Rename

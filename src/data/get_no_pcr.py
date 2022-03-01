@@ -9,6 +9,8 @@ Created on Fri Sep  3 15:33:39 2021
 # -*- coding: utf-8 -*-
 
 import pandas as pd
+import sys
+sys.path.append('/home/kyo/Documents/script/covid-data-analysis/')
 from src.config import path
 import src.data.util as util
 

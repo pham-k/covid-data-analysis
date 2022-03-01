@@ -13,10 +13,10 @@ from src.config import path
 
 # %%
 rootdir = path.external / 'treatment-data'
-current_date = '2021-10-09'
+current_date = '2021-10-18'
 
 # %% Read yesterday data
-df = pd.read_csv(path.raw / 'treatment-data' / 'merge-2021-10-08.csv')
+df = pd.read_csv(path.raw / 'treatment-data' / 'merge-2021-10-17.csv')
 with open(path.reference.joinpath('col-name-treatment.txt'), 'r') as file:
     df.columns = file.read().split('\n')
 

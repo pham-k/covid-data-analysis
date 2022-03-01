@@ -28,12 +28,18 @@ no_in = df.groupby('date_report')[['no_in']].apply(sum)
 no_in['no_in_rollmean7d'] = (
     no_in.no_in.rolling(7).mean()
 )
+# no_in['no_in_rollsum7d'] = (
+#     no_in.no_in.rolling(7).sum()
+# )
 no_in['no_in_cumsum'] = no_in.no_in.cumsum()
 no_in['no_in_ppop'] = (
     no_in.no_in / pop_total * 100000
 )
 no_in['no_in_ppop_rollmean7d'] = (
     no_in.no_in_ppop.rolling(7).mean()
+)
+no_in['no_in_ppop_rollsum7d'] = (
+    no_in.no_in_ppop.rolling(7).sum()
 )
 no_in['no_in_ppop_cumsum'] = (
     no_in.no_in_ppop.cumsum()

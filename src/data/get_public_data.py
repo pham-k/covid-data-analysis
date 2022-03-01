@@ -7,7 +7,7 @@ from data import util
 
 # %% Import
 df = pd.read_csv(
-    path.external / 'public-data' / 'data-covid-2021-10-13.csv',
+    path.external / 'public-data' / 'data-covid-2021-11-02.csv',
     dtype={
         'id_patient': str,
         'name_full': str,

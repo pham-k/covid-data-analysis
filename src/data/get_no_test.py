@@ -7,7 +7,8 @@ Created on Thu Sep 30 10:06:57 2021
 """
 
 import pandas as pd
-
+import sys
+sys.path.append('/home/kyo/Documents/script/covid-data-analysis/')
 from src.config import path
 # %%
 no_pcr = pd.read_csv(
