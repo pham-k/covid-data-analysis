@@ -35,17 +35,19 @@ names(reported_cases) <- c('date', 'confirm')
 
 # breakpoint
 reported_cases$breakpoint <- 0
-reported_cases[reported_cases$date == as.Date("2021-05-31"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-06-14"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-06-19"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-07-09"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-07-19"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-07-27"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-08-01"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-08-10"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-08-15"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-08-23"), 'breakpoint'] <- 1
-reported_cases[reported_cases$date == as.Date("2021-10-01"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-05-31"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-06-14"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-06-19"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-07-09"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-07-19"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-07-27"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-08-01"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-08-10"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-08-15"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-08-23"), 'breakpoint'] <- 1
+# reported_cases[reported_cases$date == as.Date("2021-10-01"), 'breakpoint'] <- 1
+reported_cases[reported_cases$date == as.Date("2022-02-01"), 'breakpoint'] <- 1
+reported_cases[reported_cases$date == as.Date("2022-02-06"), 'breakpoint'] <- 1
 
 generation_time <- get_generation_time(disease = "SARS-CoV-2", source = "ganyani")
 incubation_period <- get_incubation_period(disease = "SARS-CoV-2", source = "lauer")

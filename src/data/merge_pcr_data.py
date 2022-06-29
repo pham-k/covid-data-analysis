@@ -6,14 +6,14 @@ sys.path.append('/home/kyo/Documents/script/covid-data-analysis/')
 from src.config import path
 # %%
 rootdir = path.external / 'pcr-data'
-current_date = '2022-02-26'
+current_date = '2022-06-06'
 
 # %% Read yesterday data
 usecols = ['id', 'id_patient', 'date_sample', 'sex', 'yob', 'reason', 'result',
          'addr_prov_home', 'addr_dist_home', 'addr_ward_home',
          'ct_e', 'ct_n', 'ct_rdrp', 'diag_proc', 'sample_type']
 df = pd.read_csv(
-    path.raw / 'pcr-data' / 'merge-2022-02-25.csv',
+    path.raw / 'pcr-data' / 'merge-2022-05-30.csv',
     usecols=usecols)
 
 # %% Read today data

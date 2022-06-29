@@ -10,7 +10,7 @@ from datetime import date
 usecols = ['id', 'date_sample', 'sex', 'yob', 'reason', 'result',
          'addr_prov_home', 'addr_dist_home', 'addr_ward_home', 'vaccinated']
 raw = pd.read_csv(
-    path.raw / 'qtest-data' / 'merge-2022-02-26.csv',
+    path.raw / 'qtest-data' / 'merge-2022-06-06.csv',
     usecols=usecols,
     dtype={
         # 'yob': int,

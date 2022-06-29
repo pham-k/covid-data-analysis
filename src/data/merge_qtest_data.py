@@ -14,10 +14,10 @@ from src.config import path
 
 # %%
 # rootdir = path.external / 'f0-home-data'
-current_date = '2022-02-26'
+current_date = '2022-06-06'
 
 # %% Read yesterday data
-df = pd.read_csv(path.raw / 'qtest-data' / 'merge-2022-02-25.csv')
+df = pd.read_csv(path.raw / 'qtest-data' / 'merge-2022-05-30.csv')
 df['date_sample'] = pd.to_datetime(df.date_sample)
 # %% Read today data
 df_today = pd.read_excel(
